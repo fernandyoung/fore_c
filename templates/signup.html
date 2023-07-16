@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>ForeC | Sign Up</title>
+{% endblock %}
+
+{% block body %}
+<main class="form-signin w70 m-auto text-center">
+  <form action="{{ url_for('signup') }}" method="post">
+    <h1 class="h3 mb-3 fw-normal pb-4">Daftar</h1>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <div class="alert alert-dismissible alert-{{ messages[0][1] }} card {% if test==1: %}true{% else: %}wrong{% endif %}">
+      {{ messages[0] }}
+    </div>
+    {% endif %}
+    {% endwith %}
+    <div class="form-floating">
+      <input type="text" class="form-control text-bg-dark" id="floatingInput" name="username" placeholder="username" required>
+      <label for="floatingInput">Username</label>
+    </div>
+    <div class="pt-2"></div>
+    <div class="form-floating">
+      <input type="password" class="form-control text-bg-dark" id="password" name="password" placeholder="Password" required>
+      <label for="floatingPassword">Password</label>
+    </div>
+    <div class="pt-2"></div>
+    <div class="form-floating">
+      <input type="password" class="form-control text-bg-dark" id="repassword" placeholder="Password" required>
+      <label for="floatingPassword">ketik ulang-Password</label>
+    </div>
+    <div class="mb-3"></div>
+    <p>Sudah punya akun? <a href="{{ url_for('signin') }}">Masuk</a></p>
+    <button class="btn btn-primary px-4 py-2 fw-bold" type="submit">Daftar</button>
+    <p class="mt-5 mb-3 text-muted">&copy; 2017–2022</p>
+  </form>
+</main>
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript">
+  var password = document.getElementById("password")
+  , confirm_password = document.getElementById("repassword");
+
+function check(){
+  if(password.value != confirm_password.value) {
+    confirm_password.setCustomValidity("Passwords Don't Match");
+  } else {
+    confirm_password.setCustomValidity('');
+  }
+}
+
+password.onchange = check;
+confirm_password.onkeyup = check;
+</script>
+{% endblock %}

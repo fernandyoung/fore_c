@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>ForeC | Admin</title>
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+{% endblock %}
+
+{% block body %}
+<main class="form-signin w70 m-auto text-center">
+  <form method="POST" id="myForm">
+    <h1 class="h3 mb-3 fw-normal pb-4">Admin Page</h1>
+    <!-- tabel -->
+      <table class="table table-borderless text-white text-center">
+        <tbody>
+        <tr>
+          <td>Jenis Data</td>
+          <td>
+            <select class="text-center btn btn-gede btn btn-gede w-100" name="range" name="range">
+              <option class="dropdown-item" value="0" {% if hari == "0" %}selected{% endif %}>Harian</option>
+              <option class="dropdown-item" value="1" {% if hari == "1" %}selected{% endif %}>Mingguan</option>
+            </select>
+            </li>
+          </td>
+        </tr>
+        <tr>
+          <td>Kernel</td>
+          <td>
+            <select class="text-center btn btn-gede btn btn-gede w-100" name="kernel" name="kernel">
+              <option class="dropdown-item" value="rbf" {% if kernel == "rbf" %}selected{% endif %}>RBF</option>
+              <option class="dropdown-item" value="linear" {% if kernel == "linear" %}selected{% endif %}>Linear</option>
+              <option class="dropdown-item" value="poly" {% if kernel == "poly" %}selected{% endif %}>Polinomial</option>
+            </select>
+            </li>
+          </td>
+        </tr>
+        <tr>
+          <td>Nilai C (penalti)</td>
+          <td>
+            <input class="form-blue form-control text-bg-dark" type="number" step="any" min=0 name="c" value="{{c}}" required>
+        </li>
+          </td>
+        </tr>
+        <tr>
+          <td>Nilai e (toleransi)</td>
+          <td>
+            <input class="form-blue form-control text-bg-dark" type="number" step="any" min=0 name="epsilon" value="{{epsilon}}" required>
+          </td>
+        </tr>
+        <tr>
+          <td>MAE</td>
+          <td>{{mae}}</td>
+        </tr>
+        <tr>
+          <td>MAPE</td>
+          <td>{{mape}}</td>
+        </tr>
+        <tr>
+          <td>DStat</td>
+          <td>{{dstat}}</td>
+        </tr>
+        </tbody>
+    </table>
+    {% if proses == 1 %}
+    <img src="data:image/png;base64,{{plot_data}}" alt="Plot">
+    {% endif %}
+    <!-- end tabel -->
+    <div class="my-4"></div>
+    <div class="row">
+    <div class="col-lg-6">
+      <button class="btn btn-gede px-4 py-2 fw-bold" type="submit" formaction="/admin">Save</button>
+      <!-- <button class="btn btn-gede px-4 py-2 fw-bold" type="submit">Cancel</button> -->
+    </div>
+    <div class="col-lg-6">
+      <button class="btn btn-primary px-4 py-2 fw-bold" type="submit" formaction="/test">Test</button>
+    </div>
+    </div>
+    <p class="mt-5 mb-3 text-muted">&copy; 2017–2022</p>
+  </form>
+  {% if proses == 1 %}
+  <div class="card text-start">
+    <h3 class="mb-1 text-center mt-3">log:</h3>
+    <div class="mx-3">
+    <p class="mt-3">Data X latih:</p>
+    <p class="cardsub">{{X_train}} ...</p>
+    <p>Data y latih:</p>
+    <p class="cardsub">{{y_train}} ...</p>
+    <p class="text-center">=== Proses Normalisasi StandardScaler ===</p>
+    <p>Data X latih normalisasi:</p>
+    <p class="cardsub">{{XtrainN}} ...</p>
+    <p>Data y latih normalisasi:</p>
+    <p class="cardsub">{{ytrainN}} ...</p>
+    <p class="text-center">=== Prediksi terhadap X test normalisasi ===<p>
+    <p>Nilai X test normalisasi:</p>
+    <p class="cardsub">{{X_test}} ...</p>
+    <p class="text-center">=== Hasil Prediksi ===</p>
+    <p>Hasil Prediksi yang telah dilakukan inverse:</p>
+    <p class="cardsub">{{y_pred}}</p>
+    <p class="text-center">=== Perbandingan Hasil Prediksi terhadap nilai asli ===</p>
+    <p>Hasil Prediksi:</p>
+    <p class="cardsub">{{y_pred}}</p>
+    <p>Nilai Asli:</p>
+    <p class="cardsub">{{y_test}}</p>
+    </div>
+  </div>
+  {% endif %}
+</main>
+{% endblock %}

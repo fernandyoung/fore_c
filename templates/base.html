@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en" class="h-100">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="fernandyoung">
+    <meta name="generator" content="Hugo 0.108.0">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='style/logo.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='dist/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/style.css') }}">
+    {% block head %} {% endblock %}
+  </head>
+
+  <body class="d-flex h-100 text-center text-bg-dark"> 
+    <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+      <!-- navbar -->
+      <nav class="mb-auto navbar nav nav-masthead navbar-expand-lg rounded" aria-label="Thirteenth navbar example">
+        <div class="container-fluid">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample11" aria-controls="navbarsExample11" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <div class="collapse navbar-collapse d-lg-flex" id="navbarsExample11">
+            <a class="navbar-brand col-lg-3 me-0" href="#">ForeC</a>
+            <ul class="navbar-nav col-lg-6 justify-content-lg-center">
+              <li class="nav-item">
+                {% if session['tipe'] == 7 : %}
+                  <a class="nav-link {% if active_page == 'admin' %} active fw-bold {% endif %}" aria-current="page" href="{{ url_for('admin') }}">Home</a>
+                {% else : %}
+                  <a class="nav-link {% if active_page == 'home' %} active fw-bold {% endif %}" aria-current="page" href="/">Home</a>
+                {% endif %}
+              </li>
+              <li class="nav-item">
+                <a class="nav-link {% if active_page == 'chart' %} active fw-bold {% endif %}" href="chart">Chart</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="info">Info</a>
+              </li>
+            </ul>
+            <div class="d-lg-flex col-lg-3 justify-content-lg-end">
+              {% if session['loggedin'] == True : %}
+                <li class="dropdown ">
+                  <a class="dropdown-toggle btn btn-primary px-4 py-1 fw-bold" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">{{ session.username }}</a>
+                  <ul class="dropdown-menu text-center">
+                    <li><a class="dropdown-item" href="{{ url_for('logout') }}">Keluar</a></li>
+                  </ul>
+                </li>
+              {% else : %}
+                <a class="btn btn-primary px-4 py-1 fw-bold" href="signin">Masuk</a>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </nav>
+    <!-- end navbar -->
+    {% block body %} {% endblock %}
+    <!-- footer -->
+      <footer class="mt-auto text-white-50">
+        <p>Created by Achmad Youngky Fernando</p>
+      </footer>
+    <!-- end footer -->
+    </div>
+
+    <script src="../static/dist/js/bootstrap.bundle.min.js"></script>
+    {% block script %} {% endblock %}
+    
+  </body>
+</html>

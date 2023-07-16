@@ -1,0 +1,1 @@
+{"setting": [{"range": "0", "c": "1", "epsilon": "0.05", "kernel": "rbf"}, {"range": "1", "c": "1", "epsilon": "0.03", "kernel": "rbf"}]}
