@@ -30,6 +30,12 @@ input{
   }
 }
 
+@media (max-width: 990px) {
+  .sticky-top{
+    position: relative !important;
+  }
+}
+
 .b-example-divider {
   height: 3rem;
   background-color: rgba(0, 0, 0, .1);
