@@ -6,10 +6,11 @@ class connection(object):
 	"""docstring for connection"""
 	def __init__(self):
 		self.connection=mysql.connector.connect(
-			host = 'sql.freedb.tech',
-			user = 'freedb_narutouzumaki',
-			password = 'qPryGype2E$Fyjv',
-			database = 'freedb_forecast'
+			host = 'containers-us-west-63.railway.app',
+			user = 'root',
+			port = '6872',
+			password = 'v42I0qPogHcoUEdB9rHG',
+			database = 'railway'
 			)
 
 	#check username
