@@ -13,6 +13,7 @@ import database as db
 import svr
 import dstat
 import io
+import pytz
 import base64
 from werkzeug.security import check_password_hash
 
@@ -22,9 +23,13 @@ app = Flask(__name__)
 app.secret_key = 'sasukeuchiha'
 mysql = db.connection()
 
-today = datetime.today().date()
-yesterday = today+timedelta(days=1)
-yesterday = yesterday.strftime("%Y-%m-%d")
+current = datetime.now(pytz.utc)
+
+timezone = pytz.timezone('Asia/Jakarta')
+today=current.astimezone(timezone)
+
+seminggu = today+timedelta(days=6)
+today = today.strftime("%Y-%m-%d")
 
 @app.route('/')
 def index():
@@ -47,7 +52,7 @@ def chart():
 
 	tf=['','1d', '1wk']
 
-	data = yf.download("BBCA.JK", start="2017-01-01", end=yesterday, interval=tf[int(hari)]) #1wk #1d
+	data = yf.download("BBCA.JK", start="2017-01-01", end=today, interval=tf[int(hari)]) #1wk #1d
 	data = pd.DataFrame(data)
 	df = data.reset_index()
 	df['Date'] = df['Date'].dt.strftime('%Y-%m-%d')
@@ -81,7 +86,7 @@ def chart():
 		test = df
 		test = test['Close']
 		test = test.dropna()
-		now = datetime.now().date()
+		#now = datetime.now().date()
 
 		#y_test = test[-1:].values
 		h_data = y[-5:]
@@ -91,16 +96,15 @@ def chart():
 		if int(hari) == 1:
 			y_pred=forecast_model.predict(i)
 			y_pred= forecast_model.inverse_y(y_pred.reshape(1,-1))
-			besok = now
-			tanggal = besok.strftime("%Y-%m-%d")
+			#besok = now
+			tanggal = today
 			riwayat=forecast_model.predict(h_data)
 			riwayat=forecast_model.inverse_y(riwayat.reshape(1,-1))
 			pass
 		else:
 			y_pred=forecast_model.predict(i)
 			y_pred= forecast_model.inverse_y(y_pred.reshape(1,-1))
-			besok = now + timedelta(days=6)
-			tanggal = besok.strftime("%Y-%m-%d")
+			tanggal = seminggu.strftime("%Y-%m-%d")
 			riwayat=forecast_model.predict(h_data)
 			riwayat=forecast_model.inverse_y(riwayat.reshape(1,-1))
 
@@ -215,6 +219,7 @@ def admin():
 				}
 			with open('config.json', 'w') as file:
 				json.dump(data, file)
+			flash('Data berhasil disimpan!', 'Success')
 			pass
 		pass	
 		return render_template('admin.html', active_page='admin')
@@ -282,5 +287,5 @@ def page_not_found(e):
 	pass
 
 if __name__ == '__main__':
-	app.run(host="0.0.0.0", port=5000, debug=True)
-	#app.run(debug=True)
+	#app.run(host="0.0.0.0", port=5000, debug=True)
+	app.run(debug=True)
