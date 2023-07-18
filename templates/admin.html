@@ -9,6 +9,13 @@
 <main class="form-signin w70 m-auto text-center">
   <form method="POST" id="myForm">
     <h1 class="h3 mb-3 fw-normal pb-4">Admin Page</h1>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <div class="alert alert-dismissible alert-{{ messages[0][1] }} card true text-center">
+      {{ messages[0] }}
+    </div>
+    {% endif %}
+    {% endwith %}
     <!-- tabel -->
       <table class="table table-borderless text-white text-center">
         <tbody>
