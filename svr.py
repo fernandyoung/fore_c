@@ -2,13 +2,15 @@ from sklearn.svm import SVR
 from sklearn.model_selection import train_test_split
 import numpy as np
 import pandas as pd
+import pytz
 from sklearn.preprocessing import StandardScaler
 from datetime import datetime, timedelta
 import yfinance as yf
 
-today = datetime.today().date()
-yesterday = today+timedelta(days=1)
-yesterday = yesterday.strftime("%Y-%m-%d")
+current = datetime.now(pytz.utc)
+
+timezone = pytz.timezone('Asia/Jakarta')
+today=current.astimezone(timezone)
 
 class SVRForecast(object):
 	"""docstring for SVRForecast"""
@@ -36,7 +38,7 @@ class SVRForecast(object):
 		return asli
 
 	def test_split(self, time):
-		data = yf.download("BBCA.JK", start="2022-01-01", end=yesterday, interval=time) #1wk #1d
+		data = yf.download("BBCA.JK", start="2022-01-01", end=today, interval=time) #1wk #1d
 		data = pd.DataFrame(data)
 		df = data.reset_index()
 		df['X'] = df['Close'].shift(1)
